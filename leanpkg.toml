@@ -1,0 +1,7 @@
+[package]
+name = "Theorem_Proving_in_Lean"
+version = "0.1"
+lean_version = "3.5.1"
+path = "src"
+
+[dependencies]
