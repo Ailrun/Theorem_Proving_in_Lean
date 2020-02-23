@@ -1,4 +1,4 @@
-variables p q r s : Prop
+variables p q r : Prop
 
 theorem t2 (h₁ : q → r) (h₂ : p → q) : p → r :=
   assume h₃ : p,
