@@ -340,3 +340,103 @@ namespace ch4_4
     end
   end ch4_4_classical
 end ch4_4
+
+namespace ch4_5
+  variable f : ℕ → ℕ
+  variable h : ∀ x : ℕ, f x ≤ f (x + 1)
+
+  include h
+
+  example : f 0 ≤ f 3 :=
+    by repeat { apply le_trans, from h _, rw [add_comm], simp * }
+
+  example : f 0 ≥ f 1 → f 0 = f 1 :=
+    by { intro, apply le_antisymm, simp *, assumption }
+
+  example : f 0 ≥ f 1 → f 1 ≥ f 2 → f 0 = f 2 :=
+    begin
+      intros, apply le_antisymm; apply le_trans,
+        { from h _ },
+        { simp * },
+      all_goals { assumption }
+    end
+end ch4_5
+
+namespace ch4_6
+  section
+    variables (α : Type) (p q : α → Prop)
+
+    example : (∀ x, p x ∧ q x) ↔ (∀ x, p x) ∧ (∀ x, q x) :=
+    begin
+      split; intros; split; try { intro };
+      { apply and.left, simp * } <|> { apply and.right, simp * },
+    end
+    example : (∀ x, p x → q x) → (∀ x, p x) → (∀ x, q x) :=
+      by { intros, simp * }
+    example : (∀ x, p x) ∨ (∀ x, q x) → ∀ x, p x ∨ q x :=
+      by { intros, cases a; simp * }
+  end
+
+  namespace ch4_6_classical
+    open classical
+
+    variables (α : Type) (p q : α → Prop)
+    variable r : Prop
+
+    example : α → ((∀ x : α, r) ↔ r) :=
+      by { intro, split; intros; try { apply ‹α → r› }; assumption }
+    example : (∀ x, p x ∨ r) ↔ (∀ x, p x) ∨ r :=
+    begin
+      split; intros,
+      { apply by_cases; intros,
+          { right, assumption },
+          { left,
+            intro,
+            have : p x ∨ r;
+            try { cases ‹p x ∨ r› };
+            try { contradiction };
+            all_goals { simp * } } },
+      { cases ‹(∀ (x : α), p x) ∨ r›; simp * }
+    end
+    example : (∀ x, r → p x) ↔ (r → ∀ x, p x) :=
+      by { split; intros; simp * }
+  end ch4_6_classical
+
+  section
+    variables (men : Type) (barber : men)
+    variable (shaves : men → men → Prop)
+
+    example (h : ∀ x : men, shaves barber x ↔ ¬ shaves x x) : false :=
+    begin
+      have : shaves barber barber ↔ ¬ shaves barber barber, from h _,
+      have : ¬ shaves barber barber,
+      intro,
+      any_goals { apply ‹¬_› },
+      all_goals { apply ‹_ ↔ ¬_›.mp <|> rw ‹_ ↔ ¬_› },
+      all_goals { assumption }
+    end
+  end
+
+  section
+    variables (real : Type) [ordered_ring real]
+    variables (log exp : real → real)
+    variable log_exp_eq : ∀ x, log (exp x) = x
+    variable exp_log_eq : ∀ {x}, x > 0 → exp (log x) = x
+    variable exp_pos : ∀ x, exp x > 0
+    variable exp_add : ∀ x y, exp (x + y) = exp x * exp y
+
+    include log_exp_eq exp_log_eq exp_pos exp_add
+
+    example (x y z : real) : exp (x + y + z) = exp x * exp y * exp z :=
+      by rw [exp_add, exp_add]
+
+    example (y : real) (h : y > 0)  : exp (log y) = y :=
+      exp_log_eq h
+
+    theorem log_mul {x y : real} (hx : x > 0) (hy : y > 0) : log (x * y) = log x + log y :=
+      by rw [←exp_log_eq hx, ←exp_log_eq hy, ←exp_add, log_exp_eq, log_exp_eq, log_exp_eq]
+  end
+
+  example (x : ℤ) : x * 0 = 0 :=
+    by rw [←sub_self (1 : ℤ), mul_sub, mul_one, sub_self, sub_self]
+end ch4_6
