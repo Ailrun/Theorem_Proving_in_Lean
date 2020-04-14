@@ -1,7 +1,7 @@
-constant and : Prop → Prop → Prop
-constant or : Prop → Prop → Prop
-constant not : Prop → Prop → Prop
-constant implies : Prop → Prop → Prop
+-- constant and : Prop → Prop → Prop
+-- constant or : Prop → Prop → Prop
+-- constant not : Prop → Prop → Prop
+-- constant implies : Prop → Prop → Prop
 
 variables p q r : Prop
 #check and p q

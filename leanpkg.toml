@@ -1,8 +1,8 @@
 [package]
 name = "Theorem_Proving_in_Lean"
 version = "0.1"
-lean_version = "3.5.1"
+lean_version = "leanprover-community/lean:3.8.0"
 path = "src"
 
 [dependencies]
-mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "ffb6d6eb2ddb3cbc87c3518696f8940765ed04b7"}
+mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "64fa9a2062bc18cdfac3b1bf03a1f714cb434f86"}

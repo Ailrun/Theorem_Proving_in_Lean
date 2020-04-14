@@ -144,8 +144,8 @@ namespace ch4_2
     example : 1 * a = a := by simp *
     example : -a + a = 0 := by simp *
     example : a + -a = 0 := by simp *
-    example : a - a = 0 := by simp *
-    example : a + b = b + a := by simp *
+    example : a - a = 0 := by simp [sub_eq_add_neg]
+    example : a + b = b + a := by simp [add_comm]
     example : a + b + c = a + (b + c) := by simp *
     example : a * b = b * a := by rw mul_comm
     example : a * b * c = a * (b * c) := by rw mul_assoc
@@ -163,7 +163,7 @@ namespace ch4_2
     example (x y z : ℕ) : x + y + z = x + (y + z) := by rw add_assoc
 
     example (x y : ℕ) : (x + y) * (x + y) = x * x + y * x + x * y + y * y :=
-      by simp [mul_add, add_mul]
+      by simp [mul_add, add_mul, add_left_comm]
   end
 end ch4_2
 
@@ -176,7 +176,7 @@ namespace ch4_3
     variable h4 : e = 1 + d
 
     include h1 h2 h3 h4
-    theorem T : a = e := by simp *
+    theorem T : a = e := by simp [add_comm, *]
   end
 
   theorem T2 (a b c d : ℕ) (h1 : a = b) (h2 : b ≤ c) (h3 : c + 1 < d) : a < d :=
@@ -188,7 +188,7 @@ namespace ch4_3
   end
 
   example (x y : ℕ) : (x + y) * (x + y) = x * x + y * x + x * y + y * y :=
-    by simp [mul_add, add_mul]
+    by simp [mul_add, add_mul, add_left_comm]
 end ch4_3
 
 namespace ch4_4
